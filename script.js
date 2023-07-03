@@ -82,9 +82,9 @@ const axesHelper = new THREE.AxesHelper();
 scene1.add(axesHelper);
 
 const gui = new GUI();
-gui.add(testCube.position, "x", -10, 10, 0.1);
-gui.add(testCube.position, "y", -10, 10, 0.1);
-gui.add(testCube.position, "z", -10, 10, 0.1);
+gui.add(testCube.position, "x", -30, 30, 0.1);
+gui.add(testCube.position, "y", -30, 30, 0.1);
+gui.add(testCube.position, "z", -30, 30, 0.1);
 
 // Animation
 let time = Date.now();
