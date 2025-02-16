@@ -2,36 +2,50 @@ import * as THREE from 'three';
 import GUI from 'lil-gui';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-// Essential Components
+
+/*************************************************
+* Load Core Components: 
+* Canvas, Renderer, Scene, Loaders
+* Basic Camera, Basic Lighting
+*************************************************/
+
+// Canvas
 const canvas = document.getElementById("threejs");
 const dimensions = {
     width: window.innerWidth,
     height: window.innerHeight
 };
+
 // Renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 });
 renderer.setSize(dimensions.width, dimensions.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-// Camera
-const camera1 = new THREE.PerspectiveCamera(55, dimensions.width / dimensions.height);
+
 // Scene
 const scene1 = new THREE.Scene();
+
+// Loaders
+const loadingManager = new THREE.LoadingManager();
+const textureLoader = new THREE.TextureLoader(loadingManager);
+
+// Basic Camera
+const camera1 = new THREE.PerspectiveCamera(55, dimensions.width / dimensions.height);
 scene1.add(camera1);
 
 THREE.ColorManagement.enabled = false; // for using old color syntax
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace; // for using old color syntax
 
-// Resizing the Canvas
+//// Resizing the Canvas
 window.addEventListener("resize", () => {
-   dimensions.width = window.innerWidth; 
-   dimensions.height = window.innerHeight; 
-   
-   camera1.aspect = dimensions.width / dimensions.height;
-   camera1.updateProjectionMatrix();
-   
-   renderer.setSize(dimensions.width, dimensions.height);
+    dimensions.width = window.innerWidth; 
+    dimensions.height = window.innerHeight; 
+    
+    camera1.aspect = dimensions.width / dimensions.height;
+    camera1.updateProjectionMatrix();
+    
+    renderer.setSize(dimensions.width, dimensions.height);
    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));   
 });
 window.addEventListener("dblclick", () => {
@@ -51,16 +65,17 @@ window.addEventListener("dblclick", () => {
     }
 });
 
-// Managers
-const loadingManager = new THREE.LoadingManager();
-const textureLoader = new THREE.TextureLoader(loadingManager);
-
-// Textures, Materials, Lights
+// Basic Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 const pointLight = new THREE.PointLight(0xffffff, 0.5);
 pointLight.position.set(2, 3, 4);
 
 scene1.add(ambientLight, pointLight);
+
+
+/*************************************************
+* Sample Textures and Materials
+*************************************************/
 
 const jsTexture = textureLoader.load("/textures/js-logo.png");
 const jsMaterial = new THREE.MeshBasicMaterial({ map: jsTexture });
@@ -86,7 +101,11 @@ gui.add(testCube.position, "x", -30, 30, 0.1);
 gui.add(testCube.position, "y", -30, 30, 0.1);
 gui.add(testCube.position, "z", -30, 30, 0.1);
 
-// Animation
+
+/*************************************************
+* Animation
+*************************************************/
+
 let time = Date.now();
 const clock = new THREE.Clock();
 
@@ -108,5 +127,5 @@ function tick() {
     // recurse
     window.requestAnimationFrame(tick);
 }
-
+// Initiate recursive tick()
 tick();
